@@ -36,4 +36,5 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($ro
     $router->put('bookings/{id}', ['uses' => 'BookingController@update']);
 
     $router->get('passengers',  ['uses' => 'BookingController@index_passenger']);
+    $router->get('currentuser', ['uses' => 'UserController@currentuser']);
 });

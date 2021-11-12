@@ -54,4 +54,11 @@ class UserController extends Controller
 
         return response()->json($user);
     }
+
+    public function currentuser()
+    {
+        $user = Auth::user();
+
+        return response()->json($user);
+    }
 }
