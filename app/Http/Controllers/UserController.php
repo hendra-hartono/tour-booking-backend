@@ -39,12 +39,12 @@ class UserController extends Controller
 
         $user = User::where('email', $email)->first();
         if (!$user) {
-            return response('Invalid Credentials', 401);
+            return response()->json(['message' => 'Invalid Credentials'], 401);
         }
 
         $isValidPassword = Hash::check($password, $user->password);
         if (!$isValidPassword) {
-            return response('Invalid Credentials', 401);
+            return response()->json(['message' => 'Invalid Credentials'], 401);
         }
 
         $generateToken = bin2hex(random_bytes(40));

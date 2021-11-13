@@ -18,7 +18,7 @@ class TourController extends Controller
 
         $tours = Tour::when(request('status'), function ($query) {
             return $query->where('status', request('status'));
-        })->simplePaginate($limit);
+        })->paginate($limit);
 
         return response()->json($tours);
     }
@@ -124,6 +124,6 @@ class TourController extends Controller
         TourDate::where('tour_id', $id)->delete();
         Tour::destroy($id);
 
-        return response('Deleted Successfully', 200);
+        return response()->json(['message' => 'Deleted Successfully'], 200);
     }
 }

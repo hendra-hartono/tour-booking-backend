@@ -22,7 +22,7 @@ class BookingController extends Controller
 
         $passengers = Passenger::when(request('status'), function ($query) {
             return $query->where('status', request('status'));
-        })->simplePaginate($limit);
+        })->paginate($limit);
 
         return response()->json($passengers);
     }
@@ -36,7 +36,7 @@ class BookingController extends Controller
 
         $bookings = Booking::when(request('status'), function ($query) {
             return $query->where('status', request('status'));
-        })->simplePaginate($limit);
+        })->paginate($limit);
 
         return response()->json($bookings);
     }
@@ -70,13 +70,13 @@ class BookingController extends Controller
         // Business Logic validation
         $tour = Tour::where(['id' => $request->tour_id, 'status' => 'Public'])->first();
         if (!$tour) {
-            return response('Tour is not found or not set as Public', 404);
+            return response()->json(['message' => 'Tour is not found or not set as Public'], 404);
         }
 
         // Business Logic validation
         $tour_date = TourDate::where(['tour_id' => $request->tour_id, 'date' => $request->tour_date, 'status' => 'Enabled'])->first();
         if (!$tour_date) {
-            return response('Tour Date is not available', 404);
+            return response()->json(['message' => 'Tour Date is not available'], 404);
         }
 
         DB::beginTransaction();
@@ -141,13 +141,13 @@ class BookingController extends Controller
         // Business Logic validation
         $tour = Tour::where(['id' => $request->tour_id, 'status' => 'Public'])->first();
         if (!$tour) {
-            return response('Tour is not found or not set as Public', 404);
+            return response()->json(['message' => 'Tour is not found or not set as Public'], 404);
         }
 
         // Business Logic validation
         $tour_date = TourDate::where(['tour_id' => $request->tour_id, 'date' => $request->tour_date, 'status' => 'Enabled'])->first();
         if (!$tour_date) {
-            return response('Tour Date is not available', 404);
+            return response()->json(['message' => 'Tour Date is not available'], 404);
         }
 
         $booking = Booking::findOrFail($id);
