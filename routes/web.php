@@ -21,6 +21,8 @@ $router->get('/', function () use ($router) {
 $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('register', ['uses' => 'UserController@register']);
     $router->post('login', ['uses' => 'UserController@login']);
+
+    $router->get('currentuser', ['uses' => 'UserController@currentuser']);
 });
 
 $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($router) {
@@ -36,5 +38,4 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($ro
     $router->put('bookings/{id}', ['uses' => 'BookingController@update']);
 
     $router->get('passengers',  ['uses' => 'BookingController@index_passenger']);
-    $router->get('currentuser', ['uses' => 'UserController@currentuser']);
 });

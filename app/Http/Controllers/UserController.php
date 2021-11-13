@@ -59,6 +59,10 @@ class UserController extends Controller
     {
         $user = Auth::user();
 
-        return response()->json($user);
+        if ($user) {
+            return response()->json(['currentUser' => $user]);
+        } else {
+            return response()->json(['currentUser' => null]);
+        }
     }
 }
