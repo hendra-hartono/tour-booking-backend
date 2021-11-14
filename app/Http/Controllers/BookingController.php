@@ -20,9 +20,16 @@ class BookingController extends Controller
             $limit = request('limit');
         }
 
-        $passengers = Passenger::when(request('status'), function ($query) {
+        $query = Passenger::query();
+
+        $query->when(request('status'), function ($query) {
             return $query->where('status', request('status'));
-        })->paginate($limit);
+        });
+        $query->when(request('given_name'), function ($query) {
+            return $query->where('given_name', 'like', '%' . request('given_name') . '%');
+        });
+
+        $passengers = $query->paginate($limit);
 
         return response()->json($passengers);
     }
@@ -34,9 +41,16 @@ class BookingController extends Controller
             $limit = request('limit');
         }
 
-        $bookings = Booking::when(request('status'), function ($query) {
+        $query = Booking::with('tour:id,name');
+
+        $query->when(request('status'), function ($query) {
             return $query->where('status', request('status'));
-        })->paginate($limit);
+        });
+        $query->when(request('tour_id'), function ($query) {
+            return $query->where('tour_id', request('tour_id'));
+        });
+
+        $bookings = $query->paginate($limit);
 
         return response()->json($bookings);
     }
