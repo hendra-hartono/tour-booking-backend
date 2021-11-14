@@ -49,6 +49,28 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        if ($exception instanceof ValidationException) {
+            // Reformat to Standard JSON
+            $tmp = $exception->validator->getMessageBag();
+            $tmp = json_decode(json_encode($tmp), true);
+
+            $keys = array_keys($tmp);
+            $errors = array();
+
+            foreach ($keys as $key) {
+                foreach ($tmp[$key] as $value) {
+                    $errors[] = array(
+                        'message' => $value,
+                        'field' => $key
+                    );
+                }
+            }
+
+            return response()->json([
+                'errors' => $errors
+            ]);
+        }
+
         return parent::render($request, $exception);
     }
 }
