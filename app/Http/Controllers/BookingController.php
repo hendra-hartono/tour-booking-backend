@@ -64,6 +64,19 @@ class BookingController extends Controller
             'invoice'
         ])->find($id);
 
+        if ($booking) {
+            foreach ($booking['booking_passenger'] as $key => $value) {
+                $booking['booking_passenger'][$key]['given_name'] = $value['passenger']['given_name'];
+                $booking['booking_passenger'][$key]['surname'] = $value['passenger']['surname'];
+                $booking['booking_passenger'][$key]['email'] = $value['passenger']['email'];
+                $booking['booking_passenger'][$key]['mobile'] = $value['passenger']['mobile'];
+                $booking['booking_passenger'][$key]['passport'] = $value['passenger']['passport'];
+                $booking['booking_passenger'][$key]['birth_date'] = $value['passenger']['birth_date'];
+
+                unset($value['passenger']);
+            }
+        }
+
         return response()->json($booking);
     }
 
